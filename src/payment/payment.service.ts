@@ -1,26 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { FirestoreService } from 'src/services/google/firestore.service'; // fail test
+//import { FirestoreService } from '../services/google/firestore.service'; //good
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Injectable()
 export class PaymentService {
+  constructor(private firestoreService: FirestoreService) {}
   create(createPaymentDto: CreatePaymentDto) {
-    return 'This action adds a new payment';
+    return this.firestoreService.create(createPaymentDto);
   }
 
   findAll() {
-    return `This action returns all payment`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
-  }
-
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
+    return this.firestoreService.findAll();
   }
 }

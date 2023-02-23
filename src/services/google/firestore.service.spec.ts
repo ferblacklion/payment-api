@@ -1,18 +1,17 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FirestoreService } from '../services/google/firestore.service';
-import { PaymentService } from './payment.service';
+import { FirestoreService } from './firestore.service';
 
-describe('PaymentService', () => {
-  let service: PaymentService;
+describe('FirestoreService', () => {
+  let service: FirestoreService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PaymentService, FirestoreService],
+      providers: [FirestoreService],
       imports: [ConfigModule.forRoot()],
     }).compile();
 
-    service = module.get<PaymentService>(PaymentService);
+    service = module.get<FirestoreService>(FirestoreService);
   });
 
   it('should be defined', () => {

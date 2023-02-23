@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Headers,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 
@@ -7,9 +15,16 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto) {
+  create(
+    @Headers('Authorization') auth: string,
+    @Body() createPaymentDto: CreatePaymentDto,
+  ) {
     try {
-      return this.paymentService.create(createPaymentDto);
+      const keys = auth?.split(' ');
+      if (keys?.[1] === '1234') {
+        return this.paymentService.create(createPaymentDto);
+      }
+      return new HttpException('Missing auth', HttpStatus.FORBIDDEN);
     } catch (e) {
       throw e;
     }

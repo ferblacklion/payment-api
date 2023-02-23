@@ -23,6 +23,7 @@ specifiers:
   firebase-admin: ^11.5.0
   jest: 29.3.1
   prettier: ^2.3.2
+  ramda: ^0.28.0
   reflect-metadata: ^0.1.13
   rxjs: ^7.2.0
   source-map-support: ^0.5.20
@@ -42,6 +43,7 @@ dependencies:
   class-transformer: 0.5.1
   class-validator: 0.14.0
   firebase-admin: 11.5.0
+  ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
 
@@ -4905,6 +4907,10 @@ packages:
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
+
+  /ramda/0.28.0:
+    resolution: {integrity: sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==}
+    dev: false
 
   /randombytes/2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}

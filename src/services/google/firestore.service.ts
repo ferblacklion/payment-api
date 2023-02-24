@@ -4,11 +4,10 @@ import { CreatePaymentDto } from 'src/payment/dto/create-payment.dto';
 import { Payment } from 'src/entities/payment';
 import { ConfigService } from '@nestjs/config';
 import { pipe, filter, sort, ifElse, always, map, isNil } from 'ramda';
+import { initFirebase } from './initFirebase';
 
 const COLLECTION_NAME = 'payments-v2';
 const LIMIT_DOCS = 50;
-/* firestore singleton instance */
-let app = null;
 
 @Injectable()
 export class FirestoreService {
@@ -16,17 +15,7 @@ export class FirestoreService {
     null;
 
   constructor(private configService: ConfigService) {
-    if (!app) {
-      app = admin.initializeApp({
-        credential: admin.credential.cert({
-          projectId: this.configService.get<string>('PROJECT_ID'),
-          clientEmail: this.configService.get<string>('CLIENT_EMAIL'),
-          privateKey: this.configService.get<string>('PRIVATE_KEY'),
-        }),
-        databaseURL: this.configService.get<string>('DB_URL'),
-      });
-    }
-
+    const app = initFirebase(this.configService);
     this.collection = app.firestore().collection(COLLECTION_NAME);
   }
   async create(paymentData: CreatePaymentDto) {

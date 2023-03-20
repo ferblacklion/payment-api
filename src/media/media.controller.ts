@@ -15,7 +15,6 @@ import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors';
 import { Express } from 'express';
 import * as saltedMd5 from 'salted-md5';
-import { EventEmitter } from 'stream';
 
 //gs://presupuesto-app-1582410219393.appspot.com/family-payments-invoice
 @Controller('media')

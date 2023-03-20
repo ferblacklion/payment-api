@@ -3,28 +3,24 @@ import {
   Get,
   Post,
   Body,
-  Headers,
-  HttpException,
-  HttpStatus,
+  Patch,
+  Param,
+  UseGuards,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
+import { PatchPaymentDto } from './dto/patch-payment.dto';
+import { TokenGuard } from '../guard/token.guard';
 
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post()
-  create(
-    @Headers('Authorization') auth: string,
-    @Body() createPaymentDto: CreatePaymentDto,
-  ) {
+  @UseGuards(TokenGuard)
+  create(@Body() createPaymentDto: CreatePaymentDto) {
     try {
-      const keys = auth?.split(' ');
-      if (keys?.[1] === '1234') {
-        return this.paymentService.create(createPaymentDto);
-      }
-      return new HttpException('Missing auth', HttpStatus.FORBIDDEN);
+      return this.paymentService.create(createPaymentDto);
     } catch (e) {
       throw e;
     }
@@ -33,6 +29,18 @@ export class PaymentController {
   @Get()
   findAll() {
     return this.paymentService.findAll();
+  }
+  @Patch(':id')
+  @UseGuards(TokenGuard)
+  async update(@Body() patchPaymentData: PatchPaymentDto, @Param() params) {
+    try {
+      const { id } = params;
+      const updated = await this.paymentService.update(id, patchPaymentData);
+      if (updated) return { success: true };
+      return { success: false };
+    } catch (e) {
+      throw e;
+    }
   }
   @Get('/check')
   check() {

@@ -2,11 +2,11 @@ import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { StorageService } from './storage.service';
 
-jest.mock('./initFirebase', () => ({
-  initFirebase: jest.fn(() => ({
-    storage: jest.fn(() => ({ bucket: jest.fn() })),
-  })),
-}));
+// jest.mock('./initFirebase', () => ({
+//   initFirebase: jest.fn(() => ({
+//     storage: jest.fn(() => ({ bucket: jest.fn() })),
+//   })),
+// }));
 describe('StorageService', () => {
   let service: StorageService;
   const ConfigServiceMock = {

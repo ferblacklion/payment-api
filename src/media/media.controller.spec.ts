@@ -3,11 +3,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { StorageService } from '../services/google/storage.service';
 import { MediaController } from './media.controller';
 import { MediaService } from './media.service';
-jest.mock('../services/google/initFirebase', () => ({
-  initFirebase: jest.fn(() => ({
-    storage: jest.fn(() => ({ bucket: jest.fn() })),
-  })),
-}));
+// jest.mock('../services/google/initFirebase', () => ({
+//   initFirebase: jest.fn(() => ({
+//     storage: jest.fn(() => ({ bucket: jest.fn() })),
+//   })),
+// }));
 describe('MediaController', () => {
   let controller: MediaController;
 

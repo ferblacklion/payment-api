@@ -46,11 +46,30 @@ env:
   ARTIFACT_RETENTION_DAYS: 7
 
 jobs:
-  build:
+  jest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Test using Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18"
+      - name: Run Tests
+        run: |
+          npm install
+          npm test
+      - name: Tests ✅
+        if: ${{ success() }}
+        run: echo ok
 
+      - name: Tests 🚨
+        if: ${{ failure() }}
+        run: echo fail
+  build:
+    runs-on: ubuntu-latest
+    needs: jest
+    steps:
+      - uses: actions/checkout@v3
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:

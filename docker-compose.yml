@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  api:
+    container_name: "payment-api"
+    image: "nest-cloud-run"
+    environment:
+      - NODE_ENV:production
+    build:
+      context: .
+      target: "production"
+      dockerfile: Dockerfile
+    entrypoint: ["node", "dist/main"]
+    env_file:
+      - .env
+    ports:
+      - 3001:3000 # local:docker-net

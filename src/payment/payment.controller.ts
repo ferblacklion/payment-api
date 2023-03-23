@@ -44,6 +44,6 @@ export class PaymentController {
   }
   @Get('/check')
   check() {
-    return 'ok';
+    return 'OK :)';
   }
 }

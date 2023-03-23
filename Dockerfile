@@ -60,5 +60,8 @@ COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 # COPY ./.env /usr/src/app/dist/.env
 #COPY package*.json ./
 
+# tell the port number the container should be expose
+EXPOSE 3000
+
 # Start the server using the production build
 CMD [ "node", "dist/main" ]

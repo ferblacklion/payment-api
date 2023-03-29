@@ -35,6 +35,12 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 presupuesto-app*.json
+# local env files
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
 
 .vercel

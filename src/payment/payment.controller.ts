@@ -37,7 +37,7 @@ export class PaymentController {
       new ParseFilePipe({
         fileIsRequired: false,
         validators: [
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg|pdf)' }),
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 8 }),
         ],
       }),

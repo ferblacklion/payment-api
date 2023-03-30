@@ -102,7 +102,7 @@ export class FirestoreService {
     try {
       const paymentData = await this.collection
         .doc(id)
-        .update({ ...data, updated: new Date().getTime() });
+        .update({ ...data, updated: Timestamp.fromDate(new Date()).toDate() });
       if (paymentData.writeTime) return true;
       return false;
     } catch {

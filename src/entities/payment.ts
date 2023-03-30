@@ -4,5 +4,5 @@ export type Payment = {
   person: string | null;
   image?: string | null;
   updated?: number | null;
-  datetime: number | null;
+  datetime: Date | null;
 };

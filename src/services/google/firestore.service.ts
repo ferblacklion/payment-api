@@ -6,9 +6,9 @@ import { ConfigService } from '@nestjs/config';
 import { pipe, filter, sort, ifElse, always, map, isNil } from 'ramda';
 import { initFirebase } from './initFirebase';
 import { PatchPaymentDto } from 'src/payment/dto/patch-payment.dto';
+import { Timestamp } from '@firebase/firestore';
 
-const COLLECTION_NAME = 'payments-v2';
-const LIMIT_DOCS = 50;
+const LIMIT_DOCS = 25;
 
 @Injectable()
 export class FirestoreService {
@@ -17,7 +17,11 @@ export class FirestoreService {
 
   constructor(private configService: ConfigService) {
     const app = initFirebase(this.configService);
-    this.collection = app.firestore().collection(COLLECTION_NAME);
+    this.collection = app
+      .firestore()
+      .collection(
+        configService.get<string>('COLLECTION_NAME') || 'payments-v2',
+      );
   }
   async create(paymentData: CreatePaymentDto) {
     try {
@@ -38,7 +42,8 @@ export class FirestoreService {
         .get();
 
       return this.mapper(paymentData?.docs);
-    } catch {
+    } catch (e) {
+      console.log('e :>> ', e);
       return [];
     }
   }
@@ -46,11 +51,13 @@ export class FirestoreService {
   transform(data: admin.firestore.DocumentData): Payment {
     return {
       id: data.id,
-      name: data?.name ?? null,
+      name: data?.name || data?.type || null,
       person: data?.person ?? null,
       image: data?.image ?? null,
       updated: data?.updated ?? null,
-      datetime: data?.datetime ?? null,
+      datetime: data?.datetime.toDate
+        ? data?.datetime?.toDate()
+        : data?.datetime ?? null,
     };
   }
   filter(payments: Payment[]) {
@@ -75,9 +82,10 @@ export class FirestoreService {
   }
   createPayload(paymentData: CreatePaymentDto) {
     const payload: Omit<Payment, 'id'> = {
+      ...paymentData,
       name: paymentData.name,
       person: paymentData.person,
-      datetime: new Date().getTime(),
+      datetime: Timestamp.fromDate(new Date()).toDate(),
     };
     return payload;
   }

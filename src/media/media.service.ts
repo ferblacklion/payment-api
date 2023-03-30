@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { StorageService } from '../services/google/storage.service';
 
 import { CreateMediaDto } from './dto/create-media.dto';
-import { UpdateMediaDto } from './dto/update-media.dto';
 
 @Injectable()
 export class MediaService {
@@ -20,7 +19,7 @@ export class MediaService {
     return `This action returns a #${id} media`;
   }
 
-  update(id: number, updateMediaDto: UpdateMediaDto) {
+  update(id: number) {
     return `This action updates a #${id} media`;
   }
 

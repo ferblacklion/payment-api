@@ -6,21 +6,57 @@ import {
   Patch,
   Param,
   UseGuards,
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { PatchPaymentDto } from './dto/patch-payment.dto';
 import { TokenGuard } from '../guard/token.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as path from 'path';
+import * as saltedMd5 from 'salted-md5';
+import { MediaService } from '../media/media.service';
 
 @Controller('payment')
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) {}
+  constructor(
+    private readonly paymentService: PaymentService,
+    private readonly mediaService: MediaService,
+  ) {}
 
   @Post()
   @UseGuards(TokenGuard)
-  create(@Body() createPaymentDto: CreatePaymentDto) {
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @Body() createPaymentDto: CreatePaymentDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: false,
+        validators: [
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 8 }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
     try {
-      return this.paymentService.create(createPaymentDto);
+      let image = null;
+      if (file) {
+        const name = saltedMd5(file.originalname, 'SUPER-S@LT!');
+        const fileName = name + path.extname(file.originalname);
+
+        image = await this.mediaService.create({
+          fileName: `${fileName}`,
+          buffer: file.buffer,
+        });
+      }
+
+      return this.paymentService.create({ ...createPaymentDto, image });
     } catch (e) {
       throw e;
     }

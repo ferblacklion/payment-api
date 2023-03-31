@@ -21,7 +21,7 @@ import * as path from 'path';
 import * as saltedMd5 from 'salted-md5';
 import { MediaService } from '../media/media.service';
 
-@Controller('payment')
+@Controller('payments')
 export class PaymentController {
   constructor(
     private readonly paymentService: PaymentService,
@@ -77,9 +77,5 @@ export class PaymentController {
     } catch (e) {
       throw e;
     }
-  }
-  @Get('/check')
-  check() {
-    return 'OK :)';
   }
 }

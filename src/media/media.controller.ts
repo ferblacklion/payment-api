@@ -1,27 +1,26 @@
 import {
   Controller,
-  Get,
   Post,
-  Param,
-  Delete,
   UseInterceptors,
   UploadedFile,
   ParseFilePipe,
   FileTypeValidator,
   MaxFileSizeValidator,
+  UseGuards,
 } from '@nestjs/common';
 import { MediaService } from './media.service';
 import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors';
 import { Express } from 'express';
 import * as saltedMd5 from 'salted-md5';
+import { TokenGuard } from '../guard/token.guard';
 
-//gs://presupuesto-app-1582410219393.appspot.com/family-payments-invoice
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
   @Post()
+  @UseGuards(TokenGuard)
   @UseInterceptors(FileInterceptor('file'))
   async create(
     @UploadedFile(
@@ -43,20 +42,5 @@ export class MediaController {
     });
 
     return { success: true, image_url };
-  }
-
-  @Get()
-  findAll() {
-    return this.mediaService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mediaService.findOne(+id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.mediaService.remove(+id);
   }
 }

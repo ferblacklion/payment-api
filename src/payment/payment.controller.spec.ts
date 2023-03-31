@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FirestoreService } from '../services/google/firestore.service';
 import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
+import { MediaService } from '../media/media.service';
+import { StorageService } from '../services/google/storage.service';
 
 describe('PaymentController', () => {
   let controller: PaymentController;
@@ -10,7 +12,12 @@ describe('PaymentController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PaymentController],
-      providers: [PaymentService, FirestoreService],
+      providers: [
+        PaymentService,
+        FirestoreService,
+        MediaService,
+        StorageService,
+      ],
       imports: [ConfigModule.forRoot()],
     }).compile();
 

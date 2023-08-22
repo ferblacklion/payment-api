@@ -78,5 +78,8 @@
     "setupFiles": [
       "../test/setupJestMock.ts"
     ]
+  },
+  "volta": {
+    "node": "18.17.1"
   }
 }
